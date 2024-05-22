@@ -1,0 +1,26 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/careplane?useSSL=false
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQLDialect
+
+server:
+  port: 8081
+
+application:
+  security:
+    jwt:
+      secret-key: 1tsG7QZ3JbI3c0Pk2VPOKh6Nk4nlLwJQca0QducVttW6w4wEIJK+ulEMI4qkyQrCoDWWlJrS/AS9Ofip5B3U3KY4eCX3qsMxlNwWtJXaX/E3uT3BHM/3+MVnkfGdZPiwyi8qm+5Fu3MqmIQvcc7LN3xroUwXW8kV/EHp4l+tK15XJ7TkdX5d/Em9cjH1j8zapeVKsVvKZRzylHS/8y5FiILQ+891a43A54UPzGPSDTD6A7PvdOBguPa6BBS+lTmyw3+VZy1jXnvYDNs6Q0vuyYRd7qwYTTwAyn+pdvIymNySAY44zgCbYfFgZpTCOlX2nS6gUX3yKAXimxR52dTw1AXZk/paXm8bfKcWhlhzNfQ
+      expiration: 3600000 # an hour
+      refresh-token:
+        expiration: 3600000 # an hour
