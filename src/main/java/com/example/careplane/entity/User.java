@@ -2,11 +2,9 @@ package com.example.careplane.entity;
 
 import com.example.careplane.token.Token;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
+import lombok.experimental.SuperBuilder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,13 +12,16 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
 
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
+
+@Getter
+@Setter
 @Entity
-@Table(name = "user")
-public class User implements UserDetails {
+@AllArgsConstructor
+@NoArgsConstructor
+@SuperBuilder
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@DiscriminatorColumn(name = "USER_TYPE", discriminatorType = DiscriminatorType.STRING)
+public abstract class User extends AbstractEntity implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -31,6 +32,8 @@ public class User implements UserDetails {
     private String phone;
     @Enumerated(EnumType.STRING)
     private Role role;
+    @Builder.Default
+    private Boolean isEnabled = false;
 
     @OneToMany(mappedBy = "user")
     private List<Token> tokens;
@@ -70,4 +73,6 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+
 }

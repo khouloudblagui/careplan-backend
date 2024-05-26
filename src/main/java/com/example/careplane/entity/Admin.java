@@ -5,14 +5,16 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
-@Data
-@Builder
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@SuperBuilder
+@DiscriminatorValue("Admin")
 @Table(name = "admin")
-public class Admin {
+public class Admin extends User {
 
     @Id
     @GeneratedValue

@@ -2,7 +2,10 @@ package com.example.careplane.config;
 
 import com.example.careplane.auditing.ApplicationAuditAware;
 import com.example.careplane.repository.UserRepository;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.AuditorAware;
@@ -14,12 +17,20 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
+
+
+import java.util.Arrays;
+import java.util.Collections;
 
 @Configuration
 @RequiredArgsConstructor
 public class ApplicationConfig {
 
     private final UserRepository repository;
+
     //Implémenter le UserDetailsService
     @Bean
     public UserDetailsService userDetailsService (){
@@ -41,12 +52,28 @@ public class ApplicationConfig {
     }
     @Bean
     public PasswordEncoder passwordEncoder() {
+
         return new BCryptPasswordEncoder();
     }
 
     @Bean
     public AuditorAware<String> auditorAware() {
+
         return new ApplicationAuditAware();
+    }
+    @Bean
+    public CorsFilter corsFilter() {
+        final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        final CorsConfiguration config = new CorsConfiguration();
+
+        config.setAllowCredentials(true);
+        config.setAllowedOrigins(Collections.singletonList("http://localhost:4200"));
+        config.setAllowedHeaders(Arrays.asList("*"));
+        config.setAllowedMethods(Collections.singletonList("*"));
+        /*config.setAllowedMethods(Arrays.asList("PUT","GET", "POST", "DELETE", "PATCH", "OPTIONS"));*/
+
+        source.registerCorsConfiguration("/**", config);
+        return new CorsFilter(source);
     }
 
 }

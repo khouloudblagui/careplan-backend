@@ -7,9 +7,9 @@ import com.example.careplane.entity.Doctor;
 import com.example.careplane.entity.Role;
 import com.example.careplane.repository.AppointmentRepository;
 import com.example.careplane.repository.DoctorRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 import java.util.Optional;

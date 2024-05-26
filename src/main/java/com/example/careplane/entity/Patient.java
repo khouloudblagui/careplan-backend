@@ -10,6 +10,9 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Setter
+@Getter
+@DiscriminatorValue("patient")
 @Table(name = "patient")
 public class Patient {
 

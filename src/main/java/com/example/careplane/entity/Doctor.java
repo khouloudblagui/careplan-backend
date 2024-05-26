@@ -2,16 +2,17 @@ package com.example.careplane.entity;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
-@Data
-@Builder
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Getter
+@Setter
+@SuperBuilder
+@DiscriminatorValue("Doctor")
 @Table(name = "Doctor")
 public class Doctor {
     @Id

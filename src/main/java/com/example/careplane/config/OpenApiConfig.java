@@ -1,4 +1,4 @@
-package com.example.careplane.auth;
+package com.example.careplane.config;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;

@@ -23,13 +23,13 @@ public class DoctorService {
     @Autowired
     private PatientRepository patientRepository; // Supposons que vous avez un repository pour gérer les patients
 
-    public List<Appointment> getAllAppointments() {
+    public List<Appointment> getAllAppointments(Long doctorId) {
         // Récupère tous les rendez-vous des patients gérés par le médecin
-        Long doctorId = null;
+
         return appointmentRepository.findByDoctorId(doctorId); // Ajoutez la logique pour récupérer les rendez-vous en fonction de l'ID du médecin
     }
 
-    public void createPatientAccount(PatientDto patientDTO) {
+    public void createPatientAccount(Long doctorId, PatientDto patientDTO) {
         // Crée un compte pour un patient
         Patient patient = new Patient();
         patient.setFirstname(patientDTO.getFirstname());
