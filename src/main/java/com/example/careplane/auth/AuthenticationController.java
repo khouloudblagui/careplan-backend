@@ -6,10 +6,16 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -17,21 +23,16 @@ import java.io.IOException;
 @CrossOrigin(origins = "http://localhost:4200")
 public class AuthenticationController {
 
-    private  final AuthenticationService service;
-
-    /* @PostMapping("/register")
-    public ResponseEntity<AuthenticationResponse> register(
-            @RequestBody RegisterRequest request
-    ) {
-        return ResponseEntity.ok(service.register(request));
-    }*/
+    private static final Logger logger = LoggerFactory.getLogger(AuthenticationController.class);
+    private final AuthenticationService service;
 
     @PostMapping("/registerAdmin")
-    public Response register(
+    public ResponseEntity<Response> register(
             @RequestBody @Valid AdminDto userRequest,
             HttpServletRequest request
-    )  {
-        return service.register(userRequest,request);
+    ) {
+        logger.info("Received registration request for: {}", userRequest.getEmail());
+        return ResponseEntity.ok(service.register(userRequest, request));
     }
 
     @PostMapping("/authenticate")
@@ -40,6 +41,7 @@ public class AuthenticationController {
     ) {
         return ResponseEntity.ok(service.authenticate(request));
     }
+
     @PostMapping("/refresh-token")
     public void refreshToken(
             HttpServletRequest request,
@@ -48,6 +50,15 @@ public class AuthenticationController {
         service.refreshToken(request, response);
     }
 
-
-
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<Map<String, String>> handleValidationExceptions(
+            MethodArgumentNotValidException ex) {
+        Map<String, String> errors = new HashMap<>();
+        ex.getBindingResult().getAllErrors().forEach((error) -> {
+            String fieldName = ((FieldError) error).getField();
+            String errorMessage = error.getDefaultMessage();
+            errors.put(fieldName, errorMessage);
+        });
+        return ResponseEntity.badRequest().body(errors);
+    }
 }
